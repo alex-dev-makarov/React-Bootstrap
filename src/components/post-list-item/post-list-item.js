@@ -5,31 +5,18 @@ import './post-list-item.sass';
 
 
 class PostListItem extends Component {
-    state = {
-        important: false,
-        like: false
-    };
-
-    onImportant = () => {
-        const clickImportant = this.state.important
-        this.setState({ important: !clickImportant })
-    }
-
-    onLike = () => {
-        const clickLike = this.state.like
-        this.setState({ like: !clickLike })
-    }
+  
 
     render() {
-        const { label } = this.props
+        const { label, onDelete, onToggleImportant, onToggleLiked, important, like} = this.props
 
         let classNames = 'app-list-item d-flex justify-content-between';
 
-        if (this.state.important) {
+        if (important) {
             classNames += ' important';
         }
 
-        if (this.state.like) {
+        if (like) {
             classNames += ' like';
         }
 
@@ -37,19 +24,21 @@ class PostListItem extends Component {
             <div className={classNames}>
                 <span
                     className="app-list-item-label"
-                    onClick={this.onLike}>
+                    onClick={onToggleLiked}>
                     {label}
                 </span>
                 <div className='d-flex justify-content center align-items-center'>
                     <button type="submit"
                         className="btn-star btn-sm"
-                        onClick={this.onImportant}>
+                        onClick={onToggleImportant}>
 
                         <i className="fa fa-star"></i>
                     </button>
 
                     <button type="submit"
-                        className="btn-trash btn-sm">
+                            className="btn-trash btn-sm"
+                            onClick={onDelete}>
+                                
                         <i className="fa fa-trash"></i>
                     </button>
                     <i className="fa fa-heart"></i>

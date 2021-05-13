@@ -3,7 +3,7 @@ import React from 'react';
 import './app-header.css';
 import styled from 'styled-components';
 
-const Header = styled.div `
+const Header = styled.div`
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -20,11 +20,11 @@ const Header = styled.div `
     }
 `
 
-const AppHeader = () => {
+const AppHeader = ({liked, allPosts}) => {
     return (
         <Header colored>
             <h1>Aleksandr Makarov</h1>
-            <h2>5 записей, из них понравилось 0</h2>
+            <h2>{allPosts} записей, из них понравилось {liked}</h2>
         </Header>
     )
 }
