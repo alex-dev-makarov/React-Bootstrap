@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import './post-add-form.css'
 
 class PostAddForm extends Component {
-    
+
     state = {
         text: ''
     }
 
 
-    valueChangeHandler = (e) =>  {
+    valueChangeHandler = (e) => {
         this.setState({
             text: e.target.value
         });
@@ -25,16 +25,16 @@ class PostAddForm extends Component {
 
     render() {
         return (
-            <form 
+            <form
                 className="bottom-panel d-flex"
                 onSubmit={this.submitHandler}>
                 <input
                     type="text"
                     placeholder="О чём вы думаете сейчас?"
                     className="form-control new-post-label"
-                    onChange={this.valueChangeHandler} 
+                    onChange={this.valueChangeHandler}
                     value={this.state.text}
-                    required/>
+                    required />
                 <button
                     type="submit"
                     className="btn btn-outline-secondary">
@@ -42,7 +42,7 @@ class PostAddForm extends Component {
             </form>
         );
     }
-    
+
 }
 
 

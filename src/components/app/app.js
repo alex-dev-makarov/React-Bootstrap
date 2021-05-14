@@ -15,14 +15,16 @@ const AppBlocks = styled.div`
 
 `;
 
- class App extends Component {
-  
+class App extends Component {
+
     state = {
         data: [
             { label: "I like React", important: false, like: false, id: 1 },
             { label: "I like Angular", important: false, like: false, id: 2 },
-            { label: "I like JS", important: false, like: false, id: 3 },   
+            { label: "I like JS", important: false, like: false, id: 3 },
         ],
+        term: '',
+        filter: 'all'
     };
     maxId = 4
 
@@ -30,44 +32,29 @@ const AppBlocks = styled.div`
     deleteItem = (itemIndex) => {
         const data = [...this.state.data]
         data.splice(itemIndex, 1);
-        this.setState({data: data});
-        };
+        this.setState({ data: data });
+    };
 
 
     addItem = (body) => {
-     const newItem = {
-        label: body,
-        important: false,
-        id: this.maxId++
-     } 
-     this.setState(({data}) => {
-        const newArr = [...data, newItem];
-        return {data: newArr};
-        
-    });
+        const newItem = {
+            label: body,
+            important: false,
+            id: this.maxId++
+        }
+        this.setState(({ data }) => {
+            const newArr = [...data, newItem];
+            return { data: newArr };
+
+        });
     }
 
     onToggleLiked = (id) => {
-            this.setState(({data}) => {
-                const index = data.findIndex(elem => elem.id === id);
-
-                const old = data[index];
-                const newItem = {...old, like: !old.like};
-
-                const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
-                return {
-                    data: newArr
-                }
-            });
-    }
-
-
-    onToggleImportant = (id) => {
-        this.setState(({data}) => {
+        this.setState(({ data }) => {
             const index = data.findIndex(elem => elem.id === id);
 
             const old = data[index];
-            const newItem = {...old, important: !old.important};
+            const newItem = { ...old, like: !old.like };
 
             const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
             return {
@@ -77,35 +64,76 @@ const AppBlocks = styled.div`
     }
 
 
-    
+    onToggleImportant = (id) => {
+        this.setState(({ data }) => {
+            const index = data.findIndex(elem => elem.id === id);
+
+            const old = data[index];
+            const newItem = { ...old, important: !old.important };
+
+            const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+            return {
+                data: newArr
+            }
+        });
+    }
+
+    searchPost = (items, term) => {
+        if (term.length === 0) {
+            return items
+        }
+        return items.filter(item => item.label.indexOf(term) > -1)
+    };
+
+    onUpdateSearch = (term) => {
+        this.setState({ term });
+    }
+
+    filterPosts = (items, filter) => {
+        if (filter === 'like') {
+            return items.filter(item => item.like)
+        } else {
+            return items
+        }
+    }
+
+    onFilterSelect = (filter) => {
+        this.setState({ filter });
+    }
+
     render() {
-        const {data} = this.state;
+        const { data, term, filter } = this.state;
         const liked = data.filter(item => item.like).length;
         const allPosts = data.length;
-        
+
+        const visiblePosts = this.filterPosts(this.searchPost(data, term), filter);
+
         return (
             <AppBlocks>
-                <AppHeader 
+                <AppHeader
                     liked={liked}
-                    allPosts={allPosts}/>
+                    allPosts={allPosts} />
                 <div className="search-panel d-flex">
-                    <SearchPanel />
-                    <PostStatusFilter />
+                    <SearchPanel
+                        onUpdateSearch={this.onUpdateSearch} />
+                    <PostStatusFilter
+                        filter={filter}
+                        onFilterSelect={this.onFilterSelect} />
                 </div>
-                <PostList 
-                    posts={this.state.data}
-                    onDelete={this.deleteItem} 
+                <PostList
+                    posts={visiblePosts}
+                    onDelete={this.deleteItem}
                     onToggleImportant={this.onToggleImportant}
-                    onToggleLiked={this.onToggleLiked}/>
-                <PostAddForm 
-                    onAdd={this.addItem}/>
+                    onToggleLiked={this.onToggleLiked} />
+                <PostAddForm
+                    onAdd={this.addItem} />
             </AppBlocks>
         );
     };
 };
 
 
-export default App; 
+export default App;
 
 
 

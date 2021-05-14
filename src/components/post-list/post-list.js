@@ -2,7 +2,6 @@ import React from 'react';
 
 import PostListItem from '../post-list-item';
 
-
 import './post-list.css';
 
 const PostList = ({ posts, onDelete, onToggleImportant, onToggleLiked }) => {
@@ -12,11 +11,11 @@ const PostList = ({ posts, onDelete, onToggleImportant, onToggleLiked }) => {
         return (
             <li key={id}
                 className="list-group-item">
-                <PostListItem  
+                <PostListItem
                     {...itemProps}  // label={item.label} // important={item.important}
                     onDelete={() => onDelete(index)}
                     onToggleImportant={() => onToggleImportant(id)}
-                    onToggleLiked={() => onToggleLiked(id)}/>
+                    onToggleLiked={() => onToggleLiked(id)} />
             </li>
         )
     });
